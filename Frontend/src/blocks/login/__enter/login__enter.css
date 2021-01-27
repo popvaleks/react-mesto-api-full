@@ -1,0 +1,12 @@
+.login__enter {
+  font-family:'Inter', 'Arial', sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: calc(29/24);
+  /* identical to box height */
+  text-align: center;
+  color: #FFFFFF;
+  margin-top: 23.75px;
+  margin-bottom: 0;
+}
