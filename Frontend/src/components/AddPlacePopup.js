@@ -1,31 +1,31 @@
-import React from 'react';
-import PopupWithForm from './PopupWithForm';
+import React from 'react'
+import PopupWithForm from './PopupWithForm'
 
 const AddPlacePopup = ({ isOpen, onClose, onAddCard }) => {
-  const [inputNameRef, setInputNameRef] = React.useState('');
-  const [inputLinkRef, setInputLinkRef] = React.useState('');
+  const [inputNameRef, setInputNameRef] = React.useState('')
+  const [inputLinkRef, setInputLinkRef] = React.useState('')
 
   const handleInputNameRef = evt => setInputNameRef(evt.target.value)
   const handleInputLinkRef = evt => setInputLinkRef(evt.target.value)
 
   const resetForm = () => {
-    setInputNameRef('');
-    setInputLinkRef('');
+    setInputNameRef('')
+    setInputLinkRef('')
   }
 
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
-    e.preventDefault();
+    e.preventDefault()
     // Передаём значения управляемых компонентов во внешний обработчик
     onAddCard({
       name: inputNameRef,
-      link: inputLinkRef
+      link: inputLinkRef,
     })
   }
 
   React.useEffect(() => {
     resetForm()
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <PopupWithForm name="cards" title="Новое место" id="" bntText="Создать"
@@ -47,4 +47,4 @@ const AddPlacePopup = ({ isOpen, onClose, onAddCard }) => {
   )
 }
 
-export default AddPlacePopup;
+export default AddPlacePopup

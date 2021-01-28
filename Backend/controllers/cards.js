@@ -14,7 +14,7 @@ const getCards = (req, res, next) => {
       res.send(cards)
     })
     .catch(next)
-};
+}
 
 const postCards = (req, res, next) => {
   return Card.countDocuments()
@@ -34,11 +34,10 @@ const postCards = (req, res, next) => {
         })
     })
     .catch(next)
-};
-
+}
 
 const deleteCards = (req, res, next) => {
-  const { _id } = req.params;
+  const { _id } = req.params
   Card.findOne({ _id })
     .orFail(() => {
       throw new ErrorHandler('Карточка не найдена', 404)
@@ -46,7 +45,7 @@ const deleteCards = (req, res, next) => {
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
         card.remove()
-          .then((removeCard) => res.send(removeCard));
+          .then((removeCard) => res.send(removeCard))
       } else {
         throw new ErrorHandler('Вы не можете удалить данную карточку', 401)
       }
@@ -56,7 +55,7 @@ const deleteCards = (req, res, next) => {
         return next(new ErrorHandler('Не валидный id', 400))
       }
       next(err)
-    });
+    })
 }
 
 const likeCards = (req, res, next) => {
@@ -74,7 +73,7 @@ const likeCards = (req, res, next) => {
         return next(new ErrorHandler('Не валидный id', 400))
       }
       next(err)
-    });
+    })
 }
 
 const deleteLikeCards = (req, res, next) => {
@@ -92,15 +91,13 @@ const deleteLikeCards = (req, res, next) => {
         return next(new ErrorHandler('Не валидный id', 400))
       }
       next(err)
-    });
-};
+    })
+}
 
 module.exports = {
   getCards,
   postCards,
   deleteCards,
   likeCards,
-  deleteLikeCards
-};
-
-
+  deleteLikeCards,
+}

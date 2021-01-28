@@ -1,9 +1,9 @@
-import React from 'react';
-import Rectangle from '../images/Rectangle.svg';
-import Union from '../images/Union.svg';
+import React from 'react'
+import Rectangle from '../images/Rectangle.svg'
+import Union from '../images/Union.svg'
 
 function AuthPopupForm({ authPopup, isOpen, onClose }) {
-  const registerText = "Вы успешно зарегистрировались!";
+  const registerText = "Вы успешно зарегистрировались!"
   const errorRegister = "Что-то пошло не так! Попробуйте ещё раз."
   return (
     <div className={`popup ${isOpen && 'popup_opened'}`} >
@@ -17,4 +17,4 @@ function AuthPopupForm({ authPopup, isOpen, onClose }) {
   )
 }
 
-export default AuthPopupForm;
+export default AuthPopupForm

@@ -3,7 +3,7 @@
  
 Ознакомиться с проектом можно по [Сылке](https://www.popvaleks.students.nomoreparties.xyz).
 
-IP - адресс сервера 178.154.231.134
+IP - адресс сервера 178.154.231.134, Доменное имя - https://api.popvaleks.students.nomoreparties.xyz
 
 https://www.popvaleks.students.nomoreparties.xyz
 

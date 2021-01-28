@@ -19,8 +19,13 @@
     "curly":"off",
     "nonblock-statement-body-position":"off",
     "quotes":"off",
-    "arrow-parens":"off"
+    "arrow-parens":"off",
+    "no-undef":"off",
+    "no-unused-vars":"off",
+    "import/extensions":"off"
+
 
   },
-  "extends": "airbnb-base"
+  "extends": "airbnb-base",
+  "parser": "babel-eslint"
 }

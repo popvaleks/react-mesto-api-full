@@ -1,24 +1,25 @@
 import { config } from './constants'
 
-export default class Api  {
+export default class Api {
   constructor(config) {
-    this._url = config.url;
-    this._headers = config.headers;
+    this._url = config.url
+    this._headers = config.headers
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _checkError(res) {
     if (res.ok) {
-      return res.json();
+      return res.json()
     }
 
-    return Promise.reject(new Error(`Ошибка: ${res.status}`));
+    return Promise.reject(new Error(`Ошибка: ${res.status}`))
   }
 
   getAllTasks() {
     return fetch(this._url, {
       method: 'GET',
       credentials: 'include',
-      headers: this._headers
+      headers: this._headers,
     }).then(this._checkError)
   }
 
@@ -26,7 +27,7 @@ export default class Api  {
     return fetch(`${this._url}/cards`, {
       method: 'GET',
       credentials: 'include',
-      headers: this._headers
+      headers: this._headers,
     }).then(this._checkError)
   }
 
@@ -34,7 +35,7 @@ export default class Api  {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
       credentials: 'include',
-      headers: this._headers
+      headers: this._headers,
     }).then(this._checkError)
   }
 
@@ -42,7 +43,7 @@ export default class Api  {
     return fetch(`${this._url}/cards/${id}/likes`, {
       method: 'PUT',
       credentials: 'include',
-      headers: this._headers
+      headers: this._headers,
     }).then(this._checkError)
   }
 
@@ -50,7 +51,7 @@ export default class Api  {
     return fetch(`${this._url}/cards/${id}/likes`, {
       method: 'DELETE',
       credentials: 'include',
-      headers: this._headers
+      headers: this._headers,
     }).then(this._checkError)
   }
 
@@ -62,7 +63,7 @@ export default class Api  {
       body: JSON.stringify({
         name: data.name,
         about: data.about,
-      })
+      }),
     }).then(this._checkError)
   }
 
@@ -72,8 +73,8 @@ export default class Api  {
       credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
-        avatar: userAvatar.avatar
-      })
+        avatar: userAvatar.avatar,
+      }),
     }).then(this._checkError)
   }
 
@@ -84,8 +85,8 @@ export default class Api  {
       headers: this._headers,
       body: JSON.stringify({
         name: data.name,
-        link: data.link
-      })
+        link: data.link,
+      }),
     }).then(this._checkError)
   }
 
@@ -98,4 +99,4 @@ export default class Api  {
   }
 }
 
- export const api = new Api(config);
+export const api = new Api(config)

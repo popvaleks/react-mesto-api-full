@@ -1,21 +1,20 @@
-import React, { useRef } from 'react';
-import PopupWithForm from './PopupWithForm';
+import React, { useRef } from 'react'
+import PopupWithForm from './PopupWithForm'
 
 function EditAvatarPopup(props) {
-
-  const { isOpen, onClose, } = props;
-  const inputRef = useRef('');
+  const { isOpen, onClose } = props
+  const inputRef = useRef('')
 
   // сброс инпута
   React.useEffect(() => {
-    inputRef.current.value = '';
-  }, [isOpen]);
+    inputRef.current.value = ''
+  }, [isOpen])
 
   function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
     props.onUpdateAvatar({
-      avatar: inputRef.current.value
-    });
+      avatar: inputRef.current.value,
+    })
   }
 
   return (
@@ -32,4 +31,4 @@ function EditAvatarPopup(props) {
   )
 }
 
-export default EditAvatarPopup;
+export default EditAvatarPopup

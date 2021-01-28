@@ -1,8 +1,9 @@
-import React from 'react';
-import AuthForm from './AuthForm';
+import React from 'react'
+import AuthForm from './AuthForm'
 
-const Login = ({handleSubmitLogin, handleEmailChange, handlePasswordChange, email, password}) => {
-
+const Login = ({
+  handleSubmitLogin, handleEmailChange, handlePasswordChange, email, password,
+}) => {
   return (
     <AuthForm
       mainMessage="Вход"
@@ -17,4 +18,4 @@ const Login = ({handleSubmitLogin, handleEmailChange, handlePasswordChange, emai
   )
 }
 
-export default Login;
+export default Login

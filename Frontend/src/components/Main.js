@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
-import Card from './Card';
-import {CurrentUserContext} from '../contexts/CurrentUserContext';
+import React, { useContext } from 'react'
+import Card from './Card'
+import { CurrentUserContext } from '../contexts/CurrentUserContext'
 
 function Main(props) {
-
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext)
 
   return (
     /* <!-- Profile --> */
@@ -40,4 +39,4 @@ function Main(props) {
   )
 }
 
-export default Main;
+export default Main

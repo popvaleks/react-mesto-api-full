@@ -1,3 +1,4 @@
-import React from 'react';
+import React from 'react'
 
-export const CurrentUserContext = React.createContext();
+// eslint-disable-next-line import/prefer-default-export
+export const CurrentUserContext = React.createContext()

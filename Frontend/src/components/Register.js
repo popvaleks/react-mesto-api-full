@@ -1,8 +1,9 @@
-import React from 'react';
-import AuthForm from './AuthForm';
+import React from 'react'
+import AuthForm from './AuthForm'
 
-const Register = ({handleSubmitRegister, handleEmailChange, handlePasswordChange, email, password}) => {
-
+const Register = ({
+  handleSubmitRegister, handleEmailChange, handlePasswordChange, email, password,
+}) => {
   return (
       <AuthForm
         mainMessage="Регистрация"
@@ -15,6 +16,6 @@ const Register = ({handleSubmitRegister, handleEmailChange, handlePasswordChange
         display="true"
       >
       </AuthForm>
-  );
+  )
 }
-export default Register;
+export default Register

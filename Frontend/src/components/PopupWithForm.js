@@ -1,7 +1,6 @@
-import React from 'react';
+import React from 'react'
 
 function PopupWithForm(props) {
-
   return (
     <div className={`popup popup_${props.name}  ${props.isOpen && 'popup_opened'}`} >
       <form className={`popup__container form_${props.name}`} id={`form_${props.name}`} name="edit" noValidate
@@ -18,4 +17,4 @@ function PopupWithForm(props) {
   )
 }
 
-export default PopupWithForm;
+export default PopupWithForm

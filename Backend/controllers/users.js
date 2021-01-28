@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const { NODE_ENV, JWT_SECRET } = process.env
-const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 const { getId } = require('../helpers/getId')
 const ErrorHandler = require('../middlewares/errorsHandler')
 
@@ -15,7 +15,7 @@ const getUsers = (req, res, next) => {
       res.send(users)
     })
     .catch(next)
-};
+}
 
 const getProfile = (req, res, next) => {
   const { _id } = req.params
@@ -34,18 +34,25 @@ const getProfile = (req, res, next) => {
     })
 }
 
-
 const createUser = (req, res, next) => {
-  if (req.body.password.length < 8) {
-    return next(new ErrorHandler('Пароль должен состоять минимум из 8 символов', 400))
-  }
   bcrypt.hash(req.body.password, 10)
     .then(hash => User.create({
       email: req.body.email,
       password: hash, // записываем хеш в базу
+      name: req.body.name,
+      about: req.body.about,
+      avatar: req.body.avatar,
     }))
     .then((users) => {
-      res.send(users)
+      res.send({
+        data: {
+          name: users.name,
+          about: users.about,
+          avatar: users.avatar,
+          _id: users._id,
+          email: users.email,
+        },
+      })
     })
     .catch((err) => {
       const duplicateErrorCode = 11000
@@ -54,14 +61,14 @@ const createUser = (req, res, next) => {
       }
       next(err)
     })
-};
+}
 
 const login = (req, res, next) => {
   const { email, password } = req.body
   // Проверка с ошибками уже в схеме
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'world-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'world-secret', { expiresIn: '7d' })
       res.cookie('jwt', token, {
         maxAge: 60 * 60 * 24 * 7 * 1000,
         httpOnly: false,
@@ -70,7 +77,7 @@ const login = (req, res, next) => {
         secure: true,
         credentials: 'include',
       })
-        .send({ message: 'Вы успешно авторизаровались' });
+        .send({ message: 'Вы успешно авторизаровались' })
     })
     .catch(next)
 }
@@ -84,7 +91,7 @@ const getUserMe = (req, res, next) => {
       res.send(user)
     })
     .catch(next)
-};
+}
 
 const updateUserInfo = (req, res, next) => {
   const _id = getId(req)
@@ -102,10 +109,10 @@ const updateUserInfo = (req, res, next) => {
       }
       next(err)
     })
-};
+}
 
-const updateUserAvatar = (req, res) => {
-  const _id = getId(req) //req.user._id
+const updateUserAvatar = (req, res, next) => {
+  const _id = getId(req) // req.user._id
   const { avatar } = req.body
   User.findOneAndUpdate({ _id }, { avatar },
     { new: true, runValidators: true })
@@ -120,7 +127,7 @@ const updateUserAvatar = (req, res) => {
       }
       next(err)
     })
-};
+}
 
 module.exports = {
   getUsers,
@@ -129,5 +136,5 @@ module.exports = {
   updateUserInfo,
   createUser,
   getUserMe,
-  updateUserAvatar
-};
+  updateUserAvatar,
+}

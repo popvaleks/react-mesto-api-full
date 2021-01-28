@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose')
+const validator = require('validator')
+const bcrypt = require('bcryptjs')
 const ErrorHandler = require('../middlewares/errorsHandler')
 
 const userSchema = new mongoose.Schema({
@@ -8,23 +8,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: 'Жак-Ив Кусто'
+    default: 'Жак-Ив Кусто',
   },
   "about": {
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: 'Исследователь'
+    default: 'Исследователь',
   },
   "avatar": {
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator: v => {
-        return /^(ftp|http|https):\/\/[^ "]+$/.test(v);
+        return /^(ftp|http|https):\/\/[^ "]+$/.test(v)
       },
-      message: 'Не корректная ссылка'
-    }
+      message: 'Не корректная ссылка',
+    },
   },
   "email": {
     type: String,
@@ -36,12 +36,12 @@ const userSchema = new mongoose.Schema({
       if (!validator.isEmail(value)) {
         throw new Error('Invalid Email Address')
       }
-    }
+    },
   },
   "password": {
     type: String,
+    required: true,
     select: false,
-    required: true
   },
 })
 
@@ -58,11 +58,11 @@ userSchema.statics.findUserByCredentials = function (email, password) {
             throw new ErrorHandler('Не верный Email или пароль', 400)
           }
 
-          return user;
-        });
-    });
-};
+          return user
+        })
+    })
+}
 
-const userModel = mongoose.model('user', userSchema);
+const userModel = mongoose.model('user', userSchema)
 
-module.exports = userModel;
+module.exports = userModel

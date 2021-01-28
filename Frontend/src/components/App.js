@@ -1,41 +1,45 @@
-import React from 'react';
-import { useHistory, Switch, Route, useLocation } from 'react-router-dom';
-import Header from './Header';
-import Main from './Main';
-import ImagePopup from './ImagePopup';
-import Footer from './Footer';
-import { api } from '../utils/api';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import EditProfilePopup from './EditProfilePopup';
-import EditAvatarPopup from './EditAvatarPopup';
-import AddPlacePopup from './AddPlacePopup';
-import ProtectedRoute from './ProtectedRoute';
-import Login from './Login';
-import Register from './Register';
-import * as auth from '../utils/auth';
-import AuthPopupForm from './AuthPopupForm';
+import React from 'react'
+import {
+  useHistory, Switch, Route, useLocation,
+} from 'react-router-dom'
+import Header from './Header'
+import Main from './Main'
+import ImagePopup from './ImagePopup'
+import Footer from './Footer'
+import { api } from '../utils/api'
+import { CurrentUserContext } from '../contexts/CurrentUserContext'
+import EditProfilePopup from './EditProfilePopup'
+import EditAvatarPopup from './EditAvatarPopup'
+import AddPlacePopup from './AddPlacePopup'
+import ProtectedRoute from './ProtectedRoute'
+import Login from './Login'
+import Register from './Register'
+import * as auth from '../utils/auth'
+import AuthPopupForm from './AuthPopupForm'
 import { getCookie, removeCookie } from '../helpers/cookieHandler'
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isAuthPopupOpen, setIsAuthPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(false);
-  const [clickedCard, setClickedCard] = React.useState({});
-  const [currentUser, setCurrentUser] = React.useState({ name: '', about: '', avatar: '', email: '', _id: '' });
-  const [cardList, setCardList] = React.useState([]);
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [headerLink, setHeaderLink] = React.useState('');
-  const [headerText, setHeaderText] = React.useState('');
-  const [visible, setVisible] = React.useState(true);
-  const [modText, setModText] = React.useState('');
-  const [authPopup, setAuthPopup] = React.useState(false);
-  const [emailInput, setEmailInput] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false)
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false)
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false)
+  const [isAuthPopupOpen, setIsAuthPopupOpen] = React.useState(false)
+  const [selectedCard, setSelectedCard] = React.useState(false)
+  const [clickedCard, setClickedCard] = React.useState({})
+  const [currentUser, setCurrentUser] = React.useState({
+    name: '', about: '', avatar: '', email: '', _id: '',
+  })
+  const [cardList, setCardList] = React.useState([])
+  const [loggedIn, setLoggedIn] = React.useState(false)
+  const [headerLink, setHeaderLink] = React.useState('')
+  const [headerText, setHeaderText] = React.useState('')
+  const [visible, setVisible] = React.useState(true)
+  const [modText, setModText] = React.useState('')
+  const [authPopup, setAuthPopup] = React.useState(false)
+  const [emailInput, setEmailInput] = React.useState('')
+  const [password, setPassword] = React.useState('')
 
-  const history = useHistory();
-  const location = useLocation();
+  const history = useHistory()
+  const location = useLocation()
 
   const hadnleLogin = () => {
     setLoggedIn(true)
@@ -46,58 +50,57 @@ function App() {
     setLoggedIn(false)
     setCurrentUser({})
     setVisible(false)
-    history.push('/sign-in');
+    history.push('/sign-in')
   }
 
   function handleCardClick(data) {
-    setSelectedCard(true);
-    setClickedCard(data);
+    setSelectedCard(true)
+    setClickedCard(data)
   }
 
   function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(true);
+    setIsEditAvatarPopupOpen(true)
   }
 
   function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(true);
+    setIsEditProfilePopupOpen(true)
   }
 
   function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(true);
+    setIsAddPlacePopupOpen(true)
   }
 
   function closeAllPopups() {
-    setIsAddPlacePopupOpen(false);
-    setIsEditProfilePopupOpen(false);
-    setIsEditAvatarPopupOpen(false);
-    setSelectedCard(false);
-    setIsAuthPopupOpen(false);
+    setIsAddPlacePopupOpen(false)
+    setIsEditProfilePopupOpen(false)
+    setIsEditAvatarPopupOpen(false)
+    setSelectedCard(false)
+    setIsAuthPopupOpen(false)
   }
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id)
     if (!isLiked) {
       // Отправляем запрос в API и получаем обновлённые данные карточки
       api.addLike(card._id)
         .then((newCard) => {
           // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-          const newCards = cardList.map((c) => c._id === card._id ? newCard : c);
+          const newCards = cardList.map((c) => (c._id === card._id ? newCard : c))
           // Обновляем стейт
-          setCardList(newCards);
+          setCardList(newCards)
         })
-        .catch((err) => { console.log(err) });
-    }
-    else {
+        .catch((err) => { console.log(err) })
+    } else {
       // Отправляем запрос в API и получаем обновлённые данные карточки
       api.deleteLike(card._id)
         .then((newCard) => {
           // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-          const newCards = cardList.map((c) => c._id === card._id ? newCard : c);
+          const newCards = cardList.map((c) => (c._id === card._id ? newCard : c))
           // Обновляем стейт
-          setCardList(newCards);
+          setCardList(newCards)
         })
-        .catch((err) => { console.log(err) });
+        .catch((err) => { console.log(err) })
     }
   }
 
@@ -105,58 +108,57 @@ function App() {
     api.deleteCard(card._id)
       .then(() => {
         // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-        const newCards = cardList.filter((c) => c._id !== card._id);
+        const newCards = cardList.filter((c) => c._id !== card._id)
         // Обновляем стейт
-        setCardList(newCards);
+        setCardList(newCards)
       })
-      .catch((err) => { console.log(err) });
+      .catch((err) => { console.log(err) })
   }
 
   function handleUpdateUser(data) {
     api.editUserInfo(data)
       .then((newData) => {
-        // setCurrentUser({ name: newData.data.name, about: newData.data.about, avatar: newData.data.avatar, _id: newData.data._id, email: newData.data.email });
-        setCurrentUser(newData.data);
-        closeAllPopups();
+        setCurrentUser(newData.data)
+        closeAllPopups()
       })
-      .catch((err) => { console.log(err) });
+      .catch((err) => { console.log(err) })
   }
 
   function handleUpdateAvatar(data) {
     api.editUserAvatar(data)
       .then((newData) => {
-        setCurrentUser(newData.data);
-        closeAllPopups();
+        setCurrentUser(newData.data)
+        closeAllPopups()
       })
-      .catch((err) => { console.log(err) });
+      .catch((err) => { console.log(err) })
   }
 
   function handleAddCard(data) {
     api.addMyCard(data)
       .then((newCard) => {
-        setCardList([newCard, ...cardList]);;
-        closeAllPopups();
+        setCardList([newCard, ...cardList])
+        closeAllPopups()
       })
-      .catch((err) => { console.log(err) });
+      .catch((err) => { console.log(err) })
   }
 
   const handleEmailChange = evt => setEmailInput(evt.target.value)
   const handlePasswordChange = evt => setPassword(evt.target.value)
 
   const handleSubmitRegister = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
     auth.register(emailInput, password)
       .then((data) => {
         setPassword('')
-        setAuthPopup(true);
+        setAuthPopup(true)
         setIsAuthPopupOpen(true)
         history.push('/sign-in')
       })
       .catch(() => {
         setPassword('')
-        setAuthPopup(false);
-        setIsAuthPopupOpen(true);
-      });
+        setAuthPopup(false)
+        setIsAuthPopupOpen(true)
+      })
   }
 
   const resetForm = () => {
@@ -164,26 +166,39 @@ function App() {
     setPassword('')
   }
 
+  const uploadMain = () => {
+    api.getUserInfo()
+      .then((data) => {
+        setCurrentUser(data)
+      })
+      .catch((err) => { console.log(err) })
+    api.getUsersCards()
+      .then((cards) => {
+        setCardList(cards)
+      })
+      .catch((err) => { console.log(err) })
+  }
+
   const handleSubmitLogin = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
     auth.authorize(emailInput, password)
       .then((data) => {
         setPassword('')
         setLoggedIn(true)
         resetForm()
-        history.push('/');
+        history.push('/')
         uploadMain()
         setVisible(true)
       })
       .catch(() => {
         setPassword('')
-        setAuthPopup(false);
+        setAuthPopup(false)
         setIsAuthPopupOpen(true)
-      });
+      })
   }
 
   const handleTokenCheck = () => {
-    const jwt = getCookie('jwt');
+    const jwt = getCookie('jwt')
 
     if (jwt) {
       setLoggedIn(true)
@@ -204,15 +219,13 @@ function App() {
         setHeaderLink('./sign-in'),
         setModText("color: '#A9A9A9'")
       )
-    }
-    else if (location.pathname === '/sign-in') {
+    } else if (location.pathname === '/sign-in') {
       return (
         setHeaderText('Регистрация'),
         setHeaderLink('./sign-up'),
         setVisible(false)
       )
-    }
-    else if (location.pathname === '/sign-up') {
+    } else if (location.pathname === '/sign-up') {
       return (
         setHeaderText('Войти'),
         setHeaderLink('./sign-in'),
@@ -231,23 +244,10 @@ function App() {
         closeAllPopups()
       }
     }
-    window.addEventListener("keyup", escHandler);
+    window.addEventListener("keyup", escHandler)
     return (
       () => window.removeEventListener("keyup", escHandler))
-  }, []);
-
-  const uploadMain = () => {
-    api.getUserInfo()
-      .then((data) => {
-        setCurrentUser(data)
-      })
-      .catch((err) => { console.log(err) });
-    api.getUsersCards()
-      .then((cards) => {
-        setCardList(cards)
-      })
-      .catch((err) => { console.log(err) });
-  }
+  }, [])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -320,8 +320,7 @@ function App() {
       </div>
     </CurrentUserContext.Provider>
 
-  );
-
+  )
 }
 
-export default App;
+export default App
