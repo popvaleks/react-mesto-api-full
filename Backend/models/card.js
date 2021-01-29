@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const { Types } = require('mongoose');
-const { linkRegExp } = require('../helpers/regExp');
+const mongoose = require('mongoose')
+const { Types } = require('mongoose')
+const { linkRegExp } = require('../helpers/regExp')
 
 const cardSchema = new mongoose.Schema({
   "likes": {
@@ -8,35 +8,35 @@ const cardSchema = new mongoose.Schema({
       type: Types.ObjectId,
     }],
     required: true,
-    default: []
+    default: [],
   },
   "name": {
     type: String,
     minlength: 2,
     maxlength: 30,
-    required: true
+    required: true,
   },
   "link": {
     type: String,
     required: true,
     validate: {
       validator: v => {
-        //return /^(ftp|http|https):\/\/[^ "]+$/.test(v);
-        return new RegExp(linkRegExp).test(v);
+        // return /^(ftp|http|https):\/\/[^ "]+$/.test(v);
+        return new RegExp(linkRegExp).test(v)
       },
-      message: 'Не корректная ссылка'
-    }
+      message: 'Не корректная ссылка',
+    },
   },
   "owner": {
     type: Types.ObjectId,
-    required: true
+    required: true,
   },
   "createdAt": {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 })
 
-const cardModel = mongoose.model('card', cardSchema);
+const cardModel = mongoose.model('card', cardSchema)
 
-module.exports = cardModel;
+module.exports = cardModel
