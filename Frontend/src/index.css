@@ -66,3 +66,7 @@
 @import url("./blocks/login/__button/login__button.css");
 @import url("./blocks/login/__input/login__input.css");
 @import url("./blocks/login/__enterText/login__enterText.css");
+/* Span */
+@import url("./blocks/spanErr/spanErr__auth.css");
+@import url("./blocks/button/button__disabled.css");
+@import url("./blocks/contentPage/contentPage.css");

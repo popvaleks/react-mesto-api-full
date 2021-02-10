@@ -3,6 +3,7 @@ import AuthForm from './AuthForm'
 
 const Login = ({
   handleSubmitLogin, handleEmailChange, handlePasswordChange, email, password,
+  emailDirty, passwordDirty, emailError, passwordError, blurHandler, formValid,
 }) => {
   return (
     <AuthForm
@@ -13,6 +14,13 @@ const Login = ({
       btnText="Вход"
       email={email}
       password={password}
+      emailError={emailError}
+      emailDirty={emailDirty}
+      passwordDirty={passwordDirty}
+      emailError={emailError}
+      passwordError={passwordError}
+      blurHandler={blurHandler}
+      formValid={formValid}
     >
     </AuthForm>
   )

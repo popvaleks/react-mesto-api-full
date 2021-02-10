@@ -1,0 +1,6 @@
+.contentPage {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 60px;
+    min-height: calc(100vh - 180px);
+}

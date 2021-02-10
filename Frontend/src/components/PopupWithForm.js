@@ -8,12 +8,12 @@ function PopupWithForm(props) {
       >
         <h3 className={`popup__title popup__title_${props.isNoProfile}`}>{props.title}</h3>
         {props.children}
-        <button className="button popup__button-save" id={props.btnId} type="submit"
+        <button disabled={!props.formValidEdit} className={`button popup__button-save ${props.disableBtn && "button__disabled"}`}id={props.btnId} type="submit"
           aria-label="Сохранить и закрыть попап">{props.bntText}</button>
         <button className="button popup__button-cross" aria-label="Закрыть попап" type="button"
           onClick={props.onClose}></button>
       </form>
-    </div>
+    </div >
   )
 }
 

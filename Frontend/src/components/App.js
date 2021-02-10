@@ -37,6 +37,11 @@ function App() {
   const [authPopup, setAuthPopup] = React.useState(false)
   const [emailInput, setEmailInput] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [emailDirty, setEmailDirty] = React.useState(false)
+  const [passwordDirty, setPasswordDirty] = React.useState(false)
+  const [emailError, setEmailError] = React.useState('Email не может быть пустым')
+  const [passwordError, setPasswordError] = React.useState('Пароль не может быть пустым')
+  const [formValid, setFormValid] = React.useState(false)
 
   const history = useHistory()
   const location = useLocation()
@@ -142,8 +147,26 @@ function App() {
       .catch((err) => { console.log(err) })
   }
 
-  const handleEmailChange = evt => setEmailInput(evt.target.value)
-  const handlePasswordChange = evt => setPassword(evt.target.value)
+  const handleEmailChange = (evt) => {
+    setEmailInput(evt.target.value)
+    const re = /([a-zA-Z0-9]([-_.]?[a-zA-Z0-9]+)*)@([a-zA-Z0-9]([-]?[a-zA-Z0-9]+)*)(\.([a-zA-Z])+)+/i
+    if (!re.test(String(evt.target.value).toLowerCase())) {
+      setEmailError('Не корректный Email')
+    } else {
+      setEmailError('')
+    }
+  }
+  const handlePasswordChange = (evt) => {
+    setPassword(evt.target.value)
+    if (evt.target.value.length < 8) {
+      setPasswordError('Пароль должен содержать минимум 8 символов')
+      if (!evt.target.value) {
+        setPasswordError('Введите пароль')
+      }
+    } else {
+      setPasswordError('')
+    }
+  }
 
   const handleSubmitRegister = (evt) => {
     evt.preventDefault()
@@ -249,72 +272,106 @@ function App() {
       () => window.removeEventListener("keyup", escHandler))
   }, [])
 
+  const blurHandler = (evt) => {
+    switch (evt.target.name) {
+      case 'email':
+        setEmailDirty(true)
+        break
+      case 'password':
+        setPasswordDirty(true)
+        break
+      // no default
+    }
+  }
+
+  React.useEffect(() => {
+    if (emailError || passwordError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [emailError, passwordError])
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <div className="background">
           <div className="page">
-            <Header
-              headerLink={headerLink}
-              headerText={headerText}
-              visible={visible}
-              modText={modText}
-              onclick={handleSignOut}>
-            </Header>
-            <Switch>
-              <ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}
-                onCardClick={handleCardClick}
-                onRemoveClick={handleCardDelete}
-                cardList={cardList}
-                onCardLike={handleCardLike}
-              />
-              <Route path="/sign-in">
-                <Login
-                  hadnleLogin={hadnleLogin}
-                  handleSubmitLogin={handleSubmitLogin}
-                  handleEmailChange={handleEmailChange}
-                  handlePasswordChange={handlePasswordChange}
-                  email={emailInput}
-                  password={password}
+            <div className="contentPage">
+              <Header
+                headerLink={headerLink}
+                headerText={headerText}
+                visible={visible}
+                modText={modText}
+                onclick={handleSignOut}>
+              </Header>
+              <Switch>
+                <ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onCardClick={handleCardClick}
+                  onRemoveClick={handleCardDelete}
+                  cardList={cardList}
+                  onCardLike={handleCardLike}
                 />
-              </Route>
-              <Route path="/sign-up">
-                <Register
-                  handleSubmitRegister={handleSubmitRegister}
-                  handleEmailChange={handleEmailChange}
-                  handlePasswordChange={handlePasswordChange}
-                  password={password}
-                />
-              </Route>
-            </Switch>
+                <Route path="/sign-in">
+                  <Login
+                    hadnleLogin={hadnleLogin}
+                    handleSubmitLogin={handleSubmitLogin}
+                    handleEmailChange={handleEmailChange}
+                    handlePasswordChange={handlePasswordChange}
+                    email={emailInput}
+                    password={password}
+                    emailDirty={emailDirty}
+                    blurHandler={blurHandler}
+                    passwordDirty={passwordDirty}
+                    emailError={emailError}
+                    passwordError={passwordError}
+                    formValid={formValid}
+                  />
+                </Route>
+                <Route path="/sign-up">
+                  <Register
+                    handleSubmitRegister={handleSubmitRegister}
+                    handleEmailChange={handleEmailChange}
+                    handlePasswordChange={handlePasswordChange}
+                    password={password}
+                    emailDirty={emailDirty}
+                    blurHandler={blurHandler}
+                    passwordDirty={passwordDirty}
+                    emailError={emailError}
+                    passwordError={passwordError}
+                    formValid={formValid}
+                  />
+                </Route>
+              </Switch>
+              {/* <!-- Попап профиля --> */}
+              <EditProfilePopup
+                onUpdateUser={handleUpdateUser}
+                isOpen={isEditProfilePopupOpen}
+                onClose={closeAllPopups} />
+              {/* <!-- Попап добавления карточки --> */}
+              <AddPlacePopup
+                onAddCard={handleAddCard}
+                isOpen={isAddPlacePopupOpen}
+                onClose={closeAllPopups} />
+              {/* <!-- Попап редактирования аватара --> */}
+              <EditAvatarPopup
+                isOpen={isEditAvatarPopupOpen}
+                onClose={closeAllPopups}
+                onUpdateAvatar={handleUpdateAvatar} />
+              <ImagePopup isOpen={selectedCard}
+                cardInfo={clickedCard}
+                onClose={closeAllPopups}>
+              </ImagePopup>
+              <AuthPopupForm
+                authPopup={authPopup}
+                isOpen={isAuthPopupOpen}
+                onClose={closeAllPopups}>
+              </AuthPopupForm>
+            </div>
             <Footer></Footer>
-            {/* <!-- Попап профиля --> */}
-            <EditProfilePopup
-              onUpdateUser={handleUpdateUser}
-              isOpen={isEditProfilePopupOpen}
-              onClose={closeAllPopups} />
-            {/* <!-- Попап добавления карточки --> */}
-            <AddPlacePopup
-              onAddCard={handleAddCard}
-              isOpen={isAddPlacePopupOpen}
-              onClose={closeAllPopups} />
-            {/* <!-- Попап редактирования аватара --> */}
-            <EditAvatarPopup
-              isOpen={isEditAvatarPopupOpen}
-              onClose={closeAllPopups}
-              onUpdateAvatar={handleUpdateAvatar} />
-            <ImagePopup isOpen={selectedCard}
-              cardInfo={clickedCard}
-              onClose={closeAllPopups}>
-            </ImagePopup>
-            <AuthPopupForm
-              authPopup={authPopup}
-              isOpen={isAuthPopupOpen}
-              onClose={closeAllPopups}>
-            </AuthPopupForm>
           </div>
         </div>
       </div>

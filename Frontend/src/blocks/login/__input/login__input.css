@@ -8,7 +8,7 @@
   font-weight: normal;
   font-size: 14px;
   line-height: calc(17/14);
-  margin-top: 30px;
+  margin-top: 40px;
   padding: 0;
   width: 358px;
   outline: none;
@@ -17,6 +17,7 @@
 
 .login__input:-webkit-autofill {
   -webkit-box-shadow: inset 0 0 0 50px black !important; /* Цвет фона */
+          box-shadow: inset 0 0 0 50px black !important; /* Цвет фона */
   -webkit-text-fill-color:  #CCCCCC !important; /* цвет текста */
   caret-color: white;
 }
