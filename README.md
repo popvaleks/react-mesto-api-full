@@ -1,4 +1,4 @@
-# Проект Movies-Frontend
+# Проект Mesto
 
 
 ## :page_with_curl: Описание проекта
